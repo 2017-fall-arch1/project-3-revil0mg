@@ -1,8 +1,7 @@
 all: libp2sw.a
 
 CPU             = msp430g2553
-CFLAGS          = -mmcu=${CPU} -Os -I../h 
-LDFLAGS		= -L../lib -L/opt/ti/msp430_gcc/include/ 
+CFLAGS          = -mmcu=${CPU} -Os -I../h
 
 #switch the compiler (for the internal make rules)
 CC              = msp430-elf-gcc
@@ -25,7 +24,7 @@ clean:
 	rm -f *.a *.o *.elf
 
 switchdemo.elf: switchdemo.o libp2sw.a 
-	$(CC) $(CFLAGS) ${LDFLAGS} -o $@ $^ -lTimer
+	$(CC) $(CFLAGS) -o $@ $^ -L../lib -lTimer
 
 load: switchdemo.elf
 	mspdebug rf2500 "prog $^"
