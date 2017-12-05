@@ -84,8 +84,8 @@ typedef struct MovLayer_s {
 
 /* initial value of {0,0} will be overwritten */
 MovLayer ml3 = { &layer3, {1,1}, 0 }; /**< not all layers move */
-MovLayer ml1 = { &layer1, {1,0}, &ml3 };
-MovLayer ml0 = { &layer0, {-1,0}, &ml1 }; 
+MovLayer ml1 = { &layer1, {0,0}, &ml3 };
+MovLayer ml0 = { &layer0, {0,0}, &ml1 }; 
 
 
 volatile int p1Score = 0;
