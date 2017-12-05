@@ -22,6 +22,7 @@ p2sw_init(unsigned char mask)
   P2IE = mask;      /* enable interrupts from switches */
   P2OUT |= mask;    /* pull-ups for switches */
   P2DIR &= ~mask;   /* set switches' bits for input */
+  P2IES |= mask;    
 
   switch_update_interrupt_sense();
 }
@@ -38,8 +39,7 @@ p2sw_read() {
 }
 
 /* Switch on P2 (S1) */
-void
-__interrupt_vec(PORT2_VECTOR) Port_2(){
+__interrupt(PORT2_VECTOR) Port_2(){
   if (P2IFG & switch_mask) {  /* did a button cause this interrupt? */
     P2IFG &= ~switch_mask;	/* clear pending sw interrupts */
     switch_update_interrupt_sense();
