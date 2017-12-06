@@ -149,12 +149,12 @@ void mlBounce(MovLayer *ml, Region *botPaddle, Region *topPaddle)
     vec2Add(&newPos, &ml->layer->posNext, &ml->velocity);
     abShapeGetBounds(ml->layer->abShape, &newPos, &shapeBoundary);
     
-    if (((shapeBoundary.botRight.axes[0] >= topPaddle->botRight.axes[0]) &&
-      (shapeBoundary.botRight.axes[1] > topPaddle->topLeft.axes[1]) &&
-      (shapeBoundary.botRight.axes[1] < topPaddle->botRight.axes[1])) ||
-      ((shapeBoundary.topLeft.axes[0] <= botPaddle->topLeft.axes[0]) &&
-      (shapeBoundary.topLeft.axes[1] > botPaddle->topLeft.axes[1]) &&
-      (shapeBoundary.topLeft.axes[1] < botPaddle->botRight.axes[1]))) {
+    if (((shapeBoundary.topLeft.axes[0] >= topPaddle->botRight.axes[0]) &&
+      (shapeBoundary.topLeft.axes[1] > topPaddle->topLeft.axes[1]) &&
+      (shapeBoundary.topLeft.axes[1] < topPaddle->botRight.axes[1])) ||
+      ((shapeBoundary.botRight.axes[0] <= botPaddle->topLeft.axes[0]) &&
+      (shapeBoundary.botRight.axes[1] > botPaddle->topLeft.axes[1]) &&
+      (shapeBoundary.botRight.axes[1] < botPaddle->botRight.axes[1]))) {
 
         int velocity = ml->velocity.axes[axis] = -ml->velocity.axes[axis];
         newPos.axes[axis] += (2*velocity);
@@ -250,6 +250,8 @@ void main()
   buzzer_init();
 
   layerGetBounds(&fieldLayer, &fieldFence);
+  layerGetBounds(&layer0, &paddle1);
+  layerGetBounds(&layer1, &paddle2);
 
   p2sw_init(15);
   or_sr(0x8);
@@ -286,8 +288,9 @@ void main()
     u_int switches = p2sw_read(), i;
     char str[5];
     for (i = 0; i < 4; i++)
-      str[i] = (switches & (1<<i)) ? '0' : '1';
+      str[i] = (switches & (1<<i)) ? '-' : '0'+i;
     str[4] = 0;
+    drawString5x7(55,80, str, COLOR_GREEN, COLOR_BLUE);
     if (str[0] == '0') {
       ml1.velocity.axes[0] = -7;
     }
